@@ -1,0 +1,165 @@
+export interface MCP {
+  id: string;
+  name: string;
+  description: string;
+  installCommand: string;
+  repoUrl: string;
+  category: string;
+  compatibility: string[];
+  configSnippet?: string;
+}
+
+export const mcpCategories = [
+  { id: "all", label: "All" },
+  { id: "essential", label: "Essential" },
+  { id: "development", label: "Development" },
+  { id: "browser", label: "Browser & Search" },
+  { id: "mobile", label: "Mobile" },
+] as const;
+
+export const mcps: MCP[] = [
+  {
+    id: "nextjs-mcp",
+    name: "Next.js MCP",
+    description: "Access Next.js documentation, best practices, and code generation directly in Claude.",
+    installCommand: "npx @anthropic-ai/mcp install next-devtools",
+    repoUrl: "https://github.com/nichochar/next-mcp",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop", "Cursor"],
+  },
+  {
+    id: "supabase-mcp",
+    name: "Supabase MCP",
+    description: "Query your Supabase database, manage auth, and interact with storage from Claude.",
+    installCommand: "npx @anthropic-ai/mcp install @supabase/mcp-server-supabase",
+    repoUrl: "https://github.com/supabase-community/supabase-mcp",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop", "Cursor"],
+  },
+  {
+    id: "github-mcp",
+    name: "GitHub MCP",
+    description: "Create repos, manage PRs, search code, and automate GitHub workflows.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-github",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop", "Cursor"],
+  },
+  {
+    id: "figma-mcp",
+    name: "Figma MCP",
+    description: "Read Figma designs and convert them to code directly in your AI workflow.",
+    installCommand: "npx @anthropic-ai/mcp install @anthropic-ai/figma-mcp",
+    repoUrl: "https://github.com/anthropics/figma-mcp",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "notion-mcp",
+    name: "Notion MCP",
+    description: "Read and write Notion pages, databases, and blocks from Claude.",
+    installCommand: "npx @anthropic-ai/mcp install @notionhq/mcp-server-notion",
+    repoUrl: "https://github.com/makenotion/notion-mcp-server",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "vercel-mcp",
+    name: "Vercel MCP",
+    description: "Deploy, manage projects, and check deployment status from your AI workflow.",
+    installCommand: "npx @anthropic-ai/mcp install @vercel/mcp",
+    repoUrl: "https://github.com/vercel/mcp",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop", "Cursor"],
+  },
+  {
+    id: "stripe-mcp",
+    name: "Stripe MCP",
+    description: "Manage Stripe products, prices, customers, and subscriptions via Claude.",
+    installCommand: "npx @anthropic-ai/mcp install @stripe/mcp",
+    repoUrl: "https://github.com/stripe/agent-toolkit",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "sentry-mcp",
+    name: "Sentry MCP",
+    description: "Search issues, analyze errors, and investigate traces in Sentry from Claude.",
+    installCommand: "npx @anthropic-ai/mcp install @sentry/mcp-server-sentry",
+    repoUrl: "https://github.com/getsentry/sentry-mcp",
+    category: "essential",
+    compatibility: ["Claude Code", "Claude Desktop", "Cursor"],
+  },
+  {
+    id: "postgres-mcp",
+    name: "PostgreSQL MCP",
+    description: "Query PostgreSQL databases, inspect schemas, and run migrations.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-postgres",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "development",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "sqlite-mcp",
+    name: "SQLite MCP",
+    description: "Read and write SQLite databases for local development and prototyping.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-sqlite",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "development",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "filesystem-mcp",
+    name: "Filesystem MCP",
+    description: "Secure file system access for reading, writing, and searching files.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-filesystem",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "development",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "docker-mcp",
+    name: "Docker MCP",
+    description: "Manage Docker containers, images, and compose stacks from Claude.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-docker",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "development",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "brave-search-mcp",
+    name: "Brave Search MCP",
+    description: "Web search powered by Brave Search API for real-time information.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-brave-search",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "browser",
+    compatibility: ["Claude Code", "Claude Desktop", "Cursor"],
+  },
+  {
+    id: "puppeteer-mcp",
+    name: "Puppeteer MCP",
+    description: "Browser automation for screenshots, scraping, and testing with Puppeteer.",
+    installCommand: "npx @anthropic-ai/mcp install @modelcontextprotocol/server-puppeteer",
+    repoUrl: "https://github.com/modelcontextprotocol/servers",
+    category: "browser",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "playwright-mcp",
+    name: "Playwright MCP",
+    description: "End-to-end browser testing and automation with Playwright.",
+    installCommand: "npx @anthropic-ai/mcp install @anthropic-ai/mcp-playwright",
+    repoUrl: "https://github.com/anthropics/mcp-playwright",
+    category: "browser",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+  {
+    id: "expo-mcp",
+    name: "Expo MCP",
+    description: "Manage Expo projects, builds, and deployments from your AI workflow.",
+    installCommand: "npx @anthropic-ai/mcp install @expo/mcp",
+    repoUrl: "https://github.com/expo/mcp",
+    category: "mobile",
+    compatibility: ["Claude Code", "Claude Desktop"],
+  },
+];
