@@ -98,6 +98,14 @@ export function Navbar({ onOpenSearch }: { onOpenSearch: () => void }) {
       {mobileOpen && (
         <div className="fixed inset-x-0 top-20 z-40 mx-4 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
           <nav className="glass rounded-2xl p-4 space-y-1" aria-label="Mobile navigation">
+            <button
+              onClick={() => { setMobileOpen(false); onOpenSearch(); }}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors w-full"
+            >
+              <Search className="w-4 h-4" />
+              Search...
+            </button>
+            <div className="border-t border-white/[0.06] my-1" />
             {navItems.map((item) => {
               const Icon = iconMap[item.icon];
               const isActive = pathname === item.href;

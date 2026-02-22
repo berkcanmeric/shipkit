@@ -5,5 +5,4 @@ export const navItems = [
   { label: "Web", href: "/web", icon: "Globe" },
   { label: "Mobile", href: "/mobile", icon: "Smartphone" },
   { label: "Setup", href: "/setup", icon: "Monitor" },
-  { label: "Workflows", href: "/workflows", icon: "Workflow" },
 ] as const;

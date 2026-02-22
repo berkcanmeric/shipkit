@@ -88,10 +88,30 @@ export const AgentCard = memo(function AgentCard({ agent }: { agent: Agent; inde
       </div>
 
       {expanded && (
-        <div className="px-4 pb-4 -mt-1">
+        <div className="px-4 pb-4 -mt-1 space-y-3">
           <pre className="text-xs text-muted-foreground bg-white/[0.03] border border-white/[0.06] rounded-lg p-3 whitespace-pre-wrap max-h-64 overflow-y-auto">
             {agent.systemPrompt}
           </pre>
+
+          {agent.starters.length > 0 && (
+            <div>
+              <p className="text-[11px] text-muted-foreground/60 mb-2 uppercase tracking-wider">Try saying</p>
+              <div className="flex flex-wrap gap-1.5">
+                {agent.starters.map((starter) => (
+                  <button
+                    key={starter}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      copyToClipboard(starter, "Starter prompt");
+                    }}
+                    className="text-[11px] text-muted-foreground px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-cyan/20 hover:text-cyan transition-colors"
+                  >
+                    {starter}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

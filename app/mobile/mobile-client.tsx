@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ChevronDown, SearchX } from "lucide-react";
+import { ChevronDown, Search, SearchX } from "lucide-react";
 import { CategoryFilter } from "@/components/sections/category-filter";
 import { ToolCard } from "@/components/cards/tool-card";
 import { mobileTools, mobileCategories } from "@/data/mobile-tools";
@@ -11,15 +11,25 @@ const INITIAL_SHOW = 3;
 
 export function MobileClient() {
   const [category, setCategory] = useState("all");
+  const [search, setSearch] = useState("");
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
-  const filtered = useMemo(
-    () =>
-      category === "all"
-        ? mobileTools
-        : mobileTools.filter((t) => t.category === category),
-    [category]
-  );
+  const filtered = useMemo(() => {
+    let result = category === "all"
+      ? mobileTools
+      : mobileTools.filter((t) => t.category === category);
+
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (t) =>
+          t.name.toLowerCase().includes(q) ||
+          t.description.toLowerCase().includes(q) ||
+          t.platforms.some((p) => p.toLowerCase().includes(q))
+      );
+    }
+    return result;
+  }, [category, search]);
 
   const itemCounts = useMemo(() => {
     const counts: Record<string, number> = { all: mobileTools.length };
@@ -48,10 +58,23 @@ export function MobileClient() {
     });
   };
 
-  const showGrouped = category === "all";
+  const showGrouped = category === "all" && !search.trim();
 
   return (
     <>
+      <div className="relative max-w-full sm:max-w-md mb-6">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <label htmlFor="mobile-search" className="sr-only">Search tools</label>
+        <input
+          id="mobile-search"
+          type="text"
+          placeholder="Search mobile tools..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl glass text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-cyan/30 transition-all"
+        />
+      </div>
+
       <CategoryFilter
         categories={mobileCategories}
         activeCategory={category}
@@ -118,13 +141,15 @@ export function MobileClient() {
           {filtered.length === 0 && (
             <div className="text-center py-16">
               <SearchX className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-              <p className="text-muted-foreground mb-1">No tools in this category yet.</p>
-              <p className="text-sm text-muted-foreground/60 mb-4">Try browsing a different category.</p>
+              <p className="text-muted-foreground mb-1">
+                {search.trim() ? `No tools matching "${search}"` : "No tools in this category yet."}
+              </p>
+              <p className="text-sm text-muted-foreground/60 mb-4">Try a different search term or browse another category.</p>
               <button
-                onClick={() => setCategory("all")}
+                onClick={() => { setSearch(""); setCategory("all"); }}
                 className="text-sm text-cyan hover:underline"
               >
-                View all tools
+                Reset filters
               </button>
             </div>
           )}
