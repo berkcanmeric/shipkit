@@ -3,7 +3,6 @@
 import { useState, useMemo, memo } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check, ThumbsUp, ChevronDown, ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import type { Prompt } from "@/data/prompts";
 
@@ -123,14 +122,9 @@ export const PromptCard = memo(function PromptCard({
         className="flex items-center gap-3 px-4 pl-5 py-3 cursor-pointer"
       >
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className={`font-semibold ${featured ? "text-base" : "text-sm"}`}>
-              {prompt.title}
-            </h3>
-            <Badge variant="outline" className="text-[10px] text-cyan border-cyan/30 px-1.5 py-0">
-              {prompt.bestWith}
-            </Badge>
-          </div>
+          <h3 className={`font-semibold ${featured ? "text-base" : "text-sm"}`}>
+            {prompt.title}
+          </h3>
           <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
             {prompt.description}
           </p>

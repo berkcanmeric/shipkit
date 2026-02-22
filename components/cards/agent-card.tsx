@@ -17,7 +17,6 @@ import {
   Server,
   GitPullRequest,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import type { Agent } from "@/data/agents";
 
@@ -65,12 +64,7 @@ export const AgentCard = memo(function AgentCard({ agent }: { agent: Agent; inde
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-sm">{agent.name}</h3>
-            <Badge variant="outline" className={`text-[10px] ${color.text} ${color.border} px-1.5 py-0`}>
-              {agent.recommendedModel}
-            </Badge>
-          </div>
+          <h3 className="font-semibold text-sm">{agent.name}</h3>
           <p className="text-xs text-muted-foreground line-clamp-1">{agent.role}</p>
         </div>
 

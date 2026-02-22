@@ -5,7 +5,7 @@ export interface Prompt {
   prompt: string;
   category: string;
   tags: string[];
-  bestWith: string;
+
   upvotes: number;
 }
 
@@ -21,7 +21,7 @@ export const prompts: Prompt[] = [
     description: "Deep analysis of code for performance bottlenecks with prioritized, quantified fixes.",
     category: "debug",
     tags: ["performance", "optimization", "profiling", "complexity", "memory", "react", "database"],
-    bestWith: "Any LLM",
+
     upvotes: 0,
     prompt: `Analyze this code for performance bottlenecks. Be specific — reference exact lines, quantify impact, and show fixed code.
 

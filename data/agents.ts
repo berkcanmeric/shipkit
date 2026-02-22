@@ -6,7 +6,6 @@ export interface Agent {
   description: string;
   systemPrompt: string;
   starters: string[];
-  recommendedModel: string;
 }
 
 export const agents: Agent[] = [
@@ -38,7 +37,7 @@ Tech stack expertise: TypeScript, React, Next.js, Node.js, PostgreSQL, Redis, AW
       "How should I architect this feature?",
       "Is this the right approach for handling state?",
     ],
-    recommendedModel: "Claude Opus",
+
   },
   {
     id: "qa-tester",
@@ -74,7 +73,7 @@ Always use testing best practices: test behavior not implementation, use meaning
       "What edge cases am I missing?",
       "Audit this page for accessibility issues",
     ],
-    recommendedModel: "Claude Sonnet",
+
   },
   {
     id: "release-manager",
@@ -104,7 +103,7 @@ Tools and practices: GitHub Releases, Conventional Commits, CI/CD pipelines, fea
       "What version should this be?",
       "Create a deployment checklist",
     ],
-    recommendedModel: "Claude Sonnet",
+
   },
   {
     id: "ui-designer",
@@ -135,7 +134,7 @@ You design with: Tailwind CSS, Framer Motion, shadcn/ui, Radix primitives. You t
       "How can I improve this component's UX?",
       "Suggest a better layout for this content",
     ],
-    recommendedModel: "Claude Opus",
+
   },
   {
     id: "product-manager",
@@ -167,7 +166,7 @@ You communicate clearly with both engineers and stakeholders. Your specs are una
       "Help me prioritize this backlog",
       "Create a spec for this product idea",
     ],
-    recommendedModel: "Claude Sonnet",
+
   },
   {
     id: "security-auditor",
@@ -201,7 +200,7 @@ Always provide the fix alongside the vulnerability. Rate severity as Critical, H
       "Is this auth implementation secure?",
       "Review these API routes for vulnerabilities",
     ],
-    recommendedModel: "Claude Opus",
+
   },
   {
     id: "tech-writer",
@@ -233,7 +232,7 @@ For README files, always include: project description, quick start, prerequisite
       "Document this API endpoint",
       "Create an onboarding guide for new devs",
     ],
-    recommendedModel: "Claude Sonnet",
+
   },
   {
     id: "perf-engineer",
@@ -264,7 +263,7 @@ Tools: Lighthouse, Web Vitals, React DevTools Profiler, Bundle Analyzer, Chrome 
       "How can I reduce my bundle size?",
       "Improve the Core Web Vitals for this page",
     ],
-    recommendedModel: "Claude Sonnet",
+
   },
   {
     id: "devops-engineer",
@@ -297,7 +296,7 @@ Prioritize: simplicity, reproducibility, security, and cost-effectiveness. Start
       "Create a Docker setup for this project",
       "How should I monitor my production app?",
     ],
-    recommendedModel: "Claude Sonnet",
+
   },
   {
     id: "code-reviewer",
@@ -331,6 +330,6 @@ Never block a PR for style preferences alone. Focus on correctness and maintaina
       "What would you change about this code?",
       "Is this PR ready to merge?",
     ],
-    recommendedModel: "Claude Opus",
+
   },
 ];
