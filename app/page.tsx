@@ -52,7 +52,22 @@ const features = [
     ],
   },
   {
-    title: "MCPs & Tools",
+    title: "Agents",
+    description: "Pre-built agent configs for your dev workflow.",
+    href: "/agents",
+    glowColor: "rgba(251,191,36,0.20)",
+    accent: "text-amber-400",
+    accentBg: "bg-amber-400/10 border-amber-400/20",
+    iconColor: "text-amber-400",
+    gradientFrom: "from-amber-400/20",
+    preview: [
+      { icon: Bot, label: "Code Agent", sub: "Write & refactor" },
+      { icon: Bot, label: "Test Agent", sub: "Generate tests" },
+      { icon: Bot, label: "Review Agent", sub: "Review changes" },
+    ],
+  },
+  {
+    title: "MCPs",
     description: "Claude MCPs, extensions, and dev tools.",
     href: "/mcps",
     glowColor: "rgba(139,92,246,0.20)",
@@ -67,8 +82,8 @@ const features = [
     ],
   },
   {
-    title: "Libraries",
-    description: "Curated web and mobile libraries for your next build.",
+    title: "Web",
+    description: "Curated web libraries and frameworks.",
     href: "/web",
     glowColor: "rgba(52,211,153,0.20)",
     accent: "text-emerald-400",
@@ -82,18 +97,18 @@ const features = [
     ],
   },
   {
-    title: "AI Agents",
-    description: "Pre-built agent configs for your dev workflow.",
-    href: "/agents",
-    glowColor: "rgba(251,191,36,0.20)",
-    accent: "text-amber-400",
-    accentBg: "bg-amber-400/10 border-amber-400/20",
-    iconColor: "text-amber-400",
-    gradientFrom: "from-amber-400/20",
+    title: "Mobile",
+    description: "Libraries and tools for iOS and Android.",
+    href: "/mobile",
+    glowColor: "rgba(59,130,246,0.20)",
+    accent: "text-blue-400",
+    accentBg: "bg-blue-400/10 border-blue-400/20",
+    iconColor: "text-blue-400",
+    gradientFrom: "from-blue-400/20",
     preview: [
-      { icon: Bot, label: "Code Agent", sub: "Write & refactor" },
-      { icon: Bot, label: "Test Agent", sub: "Generate tests" },
-      { icon: Bot, label: "Review Agent", sub: "Review changes" },
+      { img: "https://github.com/expo.png", label: "Expo" },
+      { img: "https://www.revenuecat.com/favicon-32x32.png", label: "RevenueCat" },
+      { img: "https://github.com/LottieFiles.png", label: "Lottie" },
     ],
   },
 ];
@@ -255,11 +270,13 @@ export default function Home() {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground mb-8">
               <span className="text-cyan font-medium">{prompts.length} Prompts</span>
               <span className="text-white/20">·</span>
+              <span className="text-amber-400 font-medium">{agents.length} Agents</span>
+              <span className="text-white/20">·</span>
               <span className="text-violet font-medium">{mcps.length} MCPs</span>
               <span className="text-white/20">·</span>
-              <span className="text-emerald-400 font-medium">{webTools.length + mobileTools.length} Libraries</span>
+              <span className="text-emerald-400 font-medium">{webTools.length} Web</span>
               <span className="text-white/20">·</span>
-              <span className="text-amber-400 font-medium">{agents.length} Agents</span>
+              <span className="text-blue-400 font-medium">{mobileTools.length} Mobile</span>
             </div>
 
             <div className="flex flex-wrap gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
