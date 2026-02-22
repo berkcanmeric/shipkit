@@ -311,6 +311,13 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Motto */}
+        <section className="relative max-w-7xl mx-auto px-6 py-16 sm:py-20 text-center">
+          <p className="text-xl sm:text-2xl md:text-3xl font-medium italic text-muted-foreground/70">
+            &ldquo;No need to reinvent the wheel.&rdquo;
+          </p>
+        </section>
+
         {/* CTA Section with Lamp */}
         <section className="relative max-w-7xl mx-auto px-6 py-24">
           <LampContainer>
