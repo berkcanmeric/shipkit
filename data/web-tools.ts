@@ -6,6 +6,7 @@ export interface WebTool {
   installCommand?: string;
   category: string;
   tags: string[];
+  iconUrl?: string;
 }
 
 export const webCategories = [
@@ -13,6 +14,7 @@ export const webCategories = [
   { id: "ui", label: "UI Components" },
   { id: "auth", label: "Auth" },
   { id: "database", label: "Database" },
+  { id: "orm", label: "ORM" },
   { id: "payments", label: "Payments" },
   { id: "email", label: "Email" },
   { id: "state", label: "State & Data" },
@@ -23,7 +25,6 @@ export const webCategories = [
 ] as const;
 
 export const webTools: WebTool[] = [
-  // UI Component Libraries
   {
     id: "aceternity-ui",
     name: "Aceternity UI",
@@ -31,6 +32,7 @@ export const webTools: WebTool[] = [
     url: "https://ui.aceternity.com",
     category: "ui",
     tags: ["Best animations", "React"],
+    iconUrl: "https://ui.aceternity.com/favicon.ico",
   },
   {
     id: "shadcn-ui",
@@ -40,6 +42,7 @@ export const webTools: WebTool[] = [
     installCommand: "bunx shadcn@latest init",
     category: "ui",
     tags: ["Copy-paste", "Radix"],
+    iconUrl: "https://ui.shadcn.com/favicon.ico",
   },
   {
     id: "heroui",
@@ -49,6 +52,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add @heroui/react",
     category: "ui",
     tags: ["Full library", "Accessible"],
+    iconUrl: "https://www.heroui.com/favicon.ico",
   },
   {
     id: "reactbits",
@@ -57,6 +61,7 @@ export const webTools: WebTool[] = [
     url: "https://reactbits.dev",
     category: "ui",
     tags: ["Animations", "Creative"],
+    iconUrl: "https://reactbits.dev/favicon.ico",
   },
   {
     id: "magic-ui",
@@ -65,6 +70,7 @@ export const webTools: WebTool[] = [
     url: "https://magicui.design",
     category: "ui",
     tags: ["Landing pages", "Animations"],
+    iconUrl: "https://magicui.design/favicon.ico",
   },
   {
     id: "cult-ui",
@@ -73,25 +79,7 @@ export const webTools: WebTool[] = [
     url: "https://www.cult-ui.com",
     category: "ui",
     tags: ["Unique patterns", "Creative"],
-  },
-  // Auth
-  {
-    id: "clerk",
-    name: "Clerk",
-    description: "Drop-in auth with pre-built UI components. User management done right.",
-    url: "https://clerk.com",
-    installCommand: "bun add @clerk/nextjs",
-    category: "auth",
-    tags: ["Fastest setup", "Pre-built UI"],
-  },
-  {
-    id: "nextauth",
-    name: "NextAuth.js / Auth.js",
-    description: "Flexible auth for Next.js. OAuth, credentials, magic links — all supported.",
-    url: "https://authjs.dev",
-    installCommand: "bun add next-auth",
-    category: "auth",
-    tags: ["Flexible", "Open source"],
+    iconUrl: "https://www.cult-ui.com/favicon.ico",
   },
   {
     id: "supabase-auth",
@@ -101,8 +89,8 @@ export const webTools: WebTool[] = [
     installCommand: "bun add @supabase/ssr @supabase/supabase-js",
     category: "auth",
     tags: ["Full stack", "Free tier"],
+    iconUrl: "https://supabase.com/favicon/favicon-196x196.png",
   },
-  // Database
   {
     id: "supabase",
     name: "Supabase",
@@ -111,35 +99,26 @@ export const webTools: WebTool[] = [
     installCommand: "bun add @supabase/supabase-js",
     category: "database",
     tags: ["All-in-one", "Generous free tier"],
-  },
-  {
-    id: "neon",
-    name: "Neon",
-    description: "Serverless Postgres with branching. Perfect for modern web apps.",
-    url: "https://neon.tech",
-    installCommand: "bun add @neondatabase/serverless",
-    category: "database",
-    tags: ["Serverless", "Branching"],
+    iconUrl: "https://supabase.com/favicon/favicon-196x196.png",
   },
   {
     id: "drizzle",
     name: "Drizzle ORM",
     description: "TypeScript ORM that feels like writing SQL. Lightweight and fast.",
     url: "https://orm.drizzle.team",
-    installCommand: "bun add drizzle-orm drizzle-kit",
-    category: "database",
+    category: "orm",
     tags: ["Type-safe", "Lightweight"],
+    iconUrl: "https://orm.drizzle.team/favicon.ico",
   },
   {
     id: "prisma",
     name: "Prisma",
     description: "Next-gen ORM with auto-generated types and a visual database editor.",
     url: "https://prisma.io",
-    installCommand: "bun add prisma @prisma/client",
-    category: "database",
+    category: "orm",
     tags: ["Popular", "Great DX"],
+    iconUrl: "https://prisma.io/images/favicon-32x32.png",
   },
-  // Payments
   {
     id: "stripe",
     name: "Stripe",
@@ -148,6 +127,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add stripe @stripe/stripe-js",
     category: "payments",
     tags: ["Industry standard", "Subscriptions"],
+    iconUrl: "https://github.com/stripe.png",
   },
   {
     id: "lemonsqueezy",
@@ -157,8 +137,8 @@ export const webTools: WebTool[] = [
     installCommand: "bun add @lemonsqueezy/lemonsqueezy.js",
     category: "payments",
     tags: ["Handle taxes", "Simple setup"],
+    iconUrl: "https://github.com/lmsqueezy.png",
   },
-  // Email
   {
     id: "resend",
     name: "Resend",
@@ -167,6 +147,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add resend",
     category: "email",
     tags: ["Best DX", "React Email"],
+    iconUrl: "https://github.com/resend.png",
   },
   {
     id: "react-email",
@@ -176,8 +157,8 @@ export const webTools: WebTool[] = [
     installCommand: "bun add react-email @react-email/components",
     category: "email",
     tags: ["Component-based", "Preview"],
+    iconUrl: "https://github.com/resend.png",
   },
-  // State & Data
   {
     id: "zustand",
     name: "Zustand",
@@ -186,6 +167,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add zustand",
     category: "state",
     tags: ["Minimal", "No boilerplate"],
+    iconUrl: "https://github.com/pmndrs.png",
   },
   {
     id: "tanstack-query",
@@ -195,6 +177,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add @tanstack/react-query",
     category: "state",
     tags: ["Server state", "Caching"],
+    iconUrl: "https://tanstack.com/favicon.ico",
   },
   {
     id: "jotai",
@@ -204,8 +187,8 @@ export const webTools: WebTool[] = [
     installCommand: "bun add jotai",
     category: "state",
     tags: ["Atomic", "Flexible"],
+    iconUrl: "https://jotai.org/favicon.svg",
   },
-  // Forms
   {
     id: "react-hook-form",
     name: "React Hook Form",
@@ -214,8 +197,8 @@ export const webTools: WebTool[] = [
     installCommand: "bun add react-hook-form zod @hookform/resolvers",
     category: "forms",
     tags: ["Performant", "Zod integration"],
+    iconUrl: "https://react-hook-form.com/images/logo/react-hook-form-logo-only.png",
   },
-  // Analytics
   {
     id: "posthog",
     name: "PostHog",
@@ -224,6 +207,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add posthog-js",
     category: "analytics",
     tags: ["All-in-one", "Open source"],
+    iconUrl: "https://github.com/PostHog.png",
   },
   {
     id: "vercel-analytics",
@@ -233,6 +217,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add @vercel/analytics",
     category: "analytics",
     tags: ["Zero config", "Web Vitals"],
+    iconUrl: "https://vercel.com/favicon.ico",
   },
   {
     id: "plausible",
@@ -241,8 +226,8 @@ export const webTools: WebTool[] = [
     url: "https://plausible.io",
     category: "analytics",
     tags: ["Privacy-first", "Lightweight"],
+    iconUrl: "https://github.com/plausible.png",
   },
-  // File Upload
   {
     id: "uploadthing",
     name: "UploadThing",
@@ -251,6 +236,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add uploadthing @uploadthing/react",
     category: "files",
     tags: ["Next.js native", "Type-safe"],
+    iconUrl: "https://uploadthing.com/favicon.ico",
   },
   {
     id: "cloudinary",
@@ -260,8 +246,8 @@ export const webTools: WebTool[] = [
     installCommand: "bun add cloudinary next-cloudinary",
     category: "files",
     tags: ["Image optimization", "CDN"],
+    iconUrl: "https://cloudinary.com/favicon.ico",
   },
-  // CMS
   {
     id: "sanity",
     name: "Sanity",
@@ -270,6 +256,7 @@ export const webTools: WebTool[] = [
     installCommand: "bun add next-sanity @sanity/image-url",
     category: "cms",
     tags: ["Real-time", "Customizable"],
+    iconUrl: "https://github.com/sanity-io.png",
   },
   {
     id: "contentlayer",
@@ -279,5 +266,6 @@ export const webTools: WebTool[] = [
     installCommand: "bun add contentlayer next-contentlayer",
     category: "cms",
     tags: ["Type-safe", "MDX"],
+    iconUrl: "https://contentlayer.dev/favicon/favicon-32x32.png",
   },
 ];
