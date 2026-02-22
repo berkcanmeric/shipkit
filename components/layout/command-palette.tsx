@@ -12,7 +12,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import {
-  Sparkles,
+  MessageSquareText,
   Bot,
   Puzzle,
   Globe,
@@ -57,7 +57,7 @@ export function CommandPalette({
 
         <CommandGroup heading="Pages">
           {[
-            { label: "Prompts", href: "/prompts", icon: Sparkles },
+            { label: "Prompts", href: "/prompts", icon: MessageSquareText },
             { label: "Agents", href: "/agents", icon: Bot },
             { label: "MCPs", href: "/mcps", icon: Puzzle },
             { label: "Web Libraries", href: "/web", icon: Globe },

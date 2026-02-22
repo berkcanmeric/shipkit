@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import {
-  Sparkles,
+  MessageSquareText,
   Bot,
   Puzzle,
   Globe,
@@ -20,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { navItems } from "@/data/navigation";
 
 const iconMap: Record<string, React.ElementType> = {
-  Sparkles,
+  MessageSquareText,
   Bot,
   Puzzle,
   Globe,
@@ -35,16 +34,11 @@ export function Navbar({ onOpenSearch }: { onOpenSearch: () => void }) {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50"
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 animate-in fade-in slide-in-from-top-4 duration-500">
         <div className="mx-auto max-w-7xl px-4 pt-4">
-          <nav className="glass rounded-2xl px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan to-violet flex items-center justify-center">
+          <nav className="rounded-2xl px-4 py-3 flex items-center justify-between bg-background/80 backdrop-blur-xl border border-white/[0.08]">
+            <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="ShipKit home">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan to-violet flex items-center justify-center" aria-hidden="true">
                 <span className="text-sm font-bold text-black">S</span>
               </div>
               <span className="font-bold text-lg tracking-tight">ShipKit</span>
@@ -59,22 +53,16 @@ export function Navbar({ onOpenSearch }: { onOpenSearch: () => void }) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={cn(
-                      "relative px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5",
+                    aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                      "px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 flex items-center gap-1.5",
                       isActive
-                        ? "text-cyan"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "text-cyan bg-cyan/10 border border-cyan/20"
+                        : "text-muted-foreground hover:text-foreground border border-transparent"
                     )}
                   >
                     {Icon && <Icon className="w-3.5 h-3.5" />}
                     {item.label}
-                    {isActive && (
-                      <motion.div
-                        layoutId="navbar-active"
-                        className="absolute inset-0 rounded-lg bg-cyan/10 border border-cyan/20"
-                        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                      />
-                    )}
                   </Link>
                 );
               })}
@@ -83,35 +71,33 @@ export function Navbar({ onOpenSearch }: { onOpenSearch: () => void }) {
             <div className="flex items-center gap-2">
               <button
                 onClick={onOpenSearch}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg glass transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground rounded-lg glass transition-colors"
+                aria-label="Search (⌘K)"
               >
                 <Search className="w-4 h-4" />
                 <span className="hidden sm:inline">Search</span>
-                <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-border bg-background/50 px-1.5 text-[10px] font-medium text-muted-foreground">
+                <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-border bg-background/50 px-1.5 text-[10px] font-medium text-muted-foreground" aria-hidden="true">
                   <span className="text-xs">⌘</span>K
                 </kbd>
               </button>
 
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+                className="md:hidden p-2.5 text-muted-foreground hover:text-foreground"
+                aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={mobileOpen}
               >
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </nav>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="fixed inset-x-0 top-20 z-40 mx-4"
-        >
-          <div className="glass rounded-2xl p-4 space-y-1">
+        <div className="fixed inset-x-0 top-20 z-40 mx-4 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <nav className="glass rounded-2xl p-4 space-y-1" aria-label="Mobile navigation">
             {navItems.map((item) => {
               const Icon = iconMap[item.icon];
               const isActive = pathname === item.href;
@@ -120,6 +106,7 @@ export function Navbar({ onOpenSearch }: { onOpenSearch: () => void }) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
+                  aria-current={isActive ? "page" : undefined}
                   className={cn(
                     "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors",
                     isActive
@@ -132,8 +119,8 @@ export function Navbar({ onOpenSearch }: { onOpenSearch: () => void }) {
                 </Link>
               );
             })}
-          </div>
-        </motion.div>
+          </nav>
+        </div>
       )}
     </>
   );

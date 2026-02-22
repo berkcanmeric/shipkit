@@ -17,9 +17,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem={false}
       disableTransitionOnChange
     >
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-cyan focus:text-black focus:font-medium focus:text-sm"
+      >
+        Skip to content
+      </a>
       <Navbar onOpenSearch={() => setSearchOpen(true)} />
       <CommandPalette open={searchOpen} onOpenChange={setSearchOpen} />
-      <main className="pt-24">{children}</main>
+      <main id="main-content" className="pt-20 sm:pt-24">{children}</main>
       <Footer />
       <Toaster
         theme="dark"
