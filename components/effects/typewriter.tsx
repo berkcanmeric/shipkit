@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 const phrases = [
   "Find the perfect MCP...",
@@ -12,13 +12,25 @@ const phrases = [
 
 export function Typewriter() {
   const [index, setIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % phrases.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [prefersReducedMotion]);
+
+  if (prefersReducedMotion) {
+    return (
+      <div className="h-8">
+        <span className="block text-lg md:text-xl text-muted-foreground">
+          {phrases[0]}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="h-8 overflow-hidden">

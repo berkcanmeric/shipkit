@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 export function Spotlight({
@@ -12,29 +11,41 @@ export function Spotlight({
   className?: string;
 }) {
   const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const gradientRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (rafRef.current) return; // skip if a frame is already queued
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      if (!divRef.current || !gradientRef.current) return;
+      const rect = divRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      gradientRef.current.style.background =
+        `radial-gradient(800px circle at ${x}px ${y}px, rgba(0, 240, 255, 0.06), transparent 40%)`;
+    });
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    if (gradientRef.current) gradientRef.current.style.opacity = "1";
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (gradientRef.current) gradientRef.current.style.opacity = "0";
+  }, []);
 
   return (
     <div
       ref={divRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn("relative overflow-hidden", className)}
     >
-      <motion.div
+      <div
+        ref={gradientRef}
         className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500"
-        style={{
-          opacity,
-          background: `radial-gradient(800px circle at ${position.x}px ${position.y}px, rgba(0, 240, 255, 0.06), transparent 40%)`,
-        }}
       />
       {children}
     </div>
