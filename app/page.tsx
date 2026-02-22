@@ -185,27 +185,25 @@ export default function Home() {
 
         {/* Tool Icons Carousel */}
         <section className="relative border-y border-border/50 py-6 overflow-hidden mask-edges">
-          <div className="flex animate-marquee w-fit hover:[animation-play-state:paused]">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex items-center gap-8 shrink-0 pr-8">
-                {trending.map((t) => (
-                  <div key={`${t.name}-${copy}`} className="relative group/icon shrink-0">
-                    <img
-                      src={t.icon}
-                      alt={t.name}
-                      width={44}
-                      height={44}
-                      loading="eager"
-                      decoding="async"
-                      className="w-11 h-11 rounded-xl object-contain bg-white/5 border border-white/10 p-1.5"
-                    />
-                    <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-background border border-border text-[10px] text-foreground whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none">
-                      {t.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ))}
+          <div className="flex gap-8 animate-marquee w-max hover:[animation-play-state:paused]">
+            {[0, 1].map((copy) =>
+              trending.map((t) => (
+                <div key={`${t.name}-${copy}`} className="relative group/icon shrink-0">
+                  <img
+                    src={t.icon}
+                    alt={t.name}
+                    width={44}
+                    height={44}
+                    loading="eager"
+                    decoding="async"
+                    className="w-11 h-11 rounded-xl object-contain bg-white/5 border border-white/10 p-1.5"
+                  />
+                  <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-background border border-border text-[10px] text-foreground whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none">
+                    {t.name}
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         </section>
 
