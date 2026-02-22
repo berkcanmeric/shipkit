@@ -4,6 +4,11 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRef, useCallback } from "react";
 import { MessageSquareText, Puzzle, Package, Bot, ArrowRight, Copy, Zap, Terminal, Braces, Cpu, Layers } from "lucide-react";
+import { prompts } from "@/data/prompts";
+import { mcps } from "@/data/mcps";
+import { webTools } from "@/data/web-tools";
+import { mobileTools } from "@/data/mobile-tools";
+import { agents } from "@/data/agents";
 
 const AuroraBackground = dynamic(
   () => import("@/components/effects/aurora-background").then((m) => m.AuroraBackground),
@@ -248,13 +253,13 @@ export default function Home() {
 
             {/* Stats line */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground mb-8">
-              <span className="text-cyan font-medium">12 Prompts</span>
+              <span className="text-cyan font-medium">{prompts.length} Prompts</span>
               <span className="text-white/20">·</span>
-              <span className="text-violet font-medium">12 MCPs</span>
+              <span className="text-violet font-medium">{mcps.length} MCPs</span>
               <span className="text-white/20">·</span>
-              <span className="text-emerald-400 font-medium">28 Libraries</span>
+              <span className="text-emerald-400 font-medium">{webTools.length + mobileTools.length} Libraries</span>
               <span className="text-white/20">·</span>
-              <span className="text-amber-400 font-medium">10 Agents</span>
+              <span className="text-amber-400 font-medium">{agents.length} Agents</span>
             </div>
 
             <div className="flex flex-wrap gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
