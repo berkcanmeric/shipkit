@@ -1,24 +1,19 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 export function PageHeader({
   title,
   description,
   accent,
+  stats,
+  children,
 }: {
   title: string;
   description: string;
   accent?: string;
+  stats?: string;
+  children?: React.ReactNode;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="mb-10"
-    >
-      <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">
+    <div className="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3">
         {accent ? (
           <>
             {title}{" "}
@@ -30,7 +25,11 @@ export function PageHeader({
           title
         )}
       </h1>
-      <p className="text-lg text-muted-foreground max-w-2xl">{description}</p>
-    </motion.div>
+      <p className="text-base sm:text-lg text-muted-foreground max-w-full sm:max-w-2xl">{description}</p>
+      {stats && (
+        <p className="text-sm text-muted-foreground/60 mt-2">{stats}</p>
+      )}
+      {children && <div className="mt-4">{children}</div>}
+    </div>
   );
 }
