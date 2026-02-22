@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import {
   Copy,
   Check,
+  ChevronDown,
   Code2,
   FlaskConical,
   Rocket,
@@ -42,18 +43,23 @@ const defaultColor = { bg: "bg-cyan/10", border: "border-cyan/20", text: "text-c
 
 export const AgentCard = memo(function AgentCard({ agent }: { agent: Agent; index: number }) {
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const Icon = iconMap[agent.icon] || Code2;
   const color = roleColors[agent.icon] || defaultColor;
 
-  const handleCopy = async () => {
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     await copyToClipboard(agent.systemPrompt, "System prompt");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="group glass rounded-xl p-4 hover:border-cyan/20 transition-all duration-200 hover:-translate-y-0.5">
-      <div className="flex items-center gap-3">
+    <div className="group glass rounded-xl hover:border-cyan/20 transition-all duration-200 hover:-translate-y-0.5">
+      <div
+        onClick={() => setExpanded(!expanded)}
+        className="flex items-center gap-3 p-4 cursor-pointer"
+      >
         <div className={`p-2.5 rounded-lg ${color.bg} border ${color.border} shrink-0`}>
           <Icon className={`w-5 h-5 ${color.text}`} />
         </div>
@@ -68,6 +74,11 @@ export const AgentCard = memo(function AgentCard({ agent }: { agent: Agent; inde
           <p className="text-xs text-muted-foreground line-clamp-1">{agent.role}</p>
         </div>
 
+        <ChevronDown
+          className={`w-3.5 h-3.5 text-muted-foreground/40 transition-transform duration-200 shrink-0 ${expanded ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
+
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleCopy}
@@ -81,6 +92,14 @@ export const AgentCard = memo(function AgentCard({ agent }: { agent: Agent; inde
           )}
         </motion.button>
       </div>
+
+      {expanded && (
+        <div className="px-4 pb-4 -mt-1">
+          <pre className="text-xs text-muted-foreground bg-white/[0.03] border border-white/[0.06] rounded-lg p-3 whitespace-pre-wrap max-h-64 overflow-y-auto">
+            {agent.systemPrompt}
+          </pre>
+        </div>
+      )}
     </div>
   );
 });
