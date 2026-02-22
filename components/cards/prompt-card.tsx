@@ -7,6 +7,7 @@ import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import type { Prompt } from "@/data/prompts";
 
 const categoryColors: Record<string, string> = {
+  audit: "bg-cyan",
   setup: "bg-emerald-500",
   ui: "bg-violet",
   api: "bg-cyan",

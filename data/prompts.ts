@@ -11,9 +11,7 @@ export interface Prompt {
 
 export const promptCategories = [
   { id: "all", label: "All" },
-  { id: "debug", label: "Debug" },
-  { id: "ui", label: "UI/UX" },
-  { id: "product", label: "Product" },
+  { id: "audit", label: "Audits" },
 ] as const;
 
 export const prompts: Prompt[] = [
@@ -21,7 +19,7 @@ export const prompts: Prompt[] = [
     id: "performance-audit",
     title: "Performance Audit",
     description: "Deep analysis of code for performance bottlenecks with prioritized, quantified fixes.",
-    category: "debug",
+    category: "audit",
     tags: ["performance", "optimization", "profiling", "complexity", "memory", "react", "database"],
 
     upvotes: 0,
@@ -78,7 +76,7 @@ If no significant bottlenecks are found, say so — don't invent issues.`,
     id: "product-audit",
     title: "Product Audit",
     description: "PM-lens review of a feature or app — gaps in UX flows, missing edge cases, and prioritized improvements.",
-    category: "product",
+    category: "audit",
     tags: ["product", "audit", "ux", "flows", "edge-cases", "requirements", "prd"],
     upvotes: 0,
     prompt: `You are a senior product manager auditing this product/feature. Be blunt, specific, and actionable — no filler.
@@ -148,7 +146,7 @@ If the product is solid, say so — don't invent problems.`,
     id: "ui-ux-audit",
     title: "UI/UX Audit",
     description: "Design-focused review of interface quality — layout, accessibility, responsiveness, and visual consistency.",
-    category: "ui",
+    category: "audit",
     tags: ["ui", "ux", "design", "accessibility", "responsive", "layout", "a11y"],
     upvotes: 0,
     prompt: `You are a senior UI/UX designer auditing this interface. Be precise — reference specific elements, not vague generalities.
@@ -225,5 +223,90 @@ Return a numbered list sorted by severity (critical first). End with a summary:
 |---|-------|----------|----------|--------|
 
 If the interface is well-executed, say so — don't invent flaws.`,
+  },
+  {
+    id: "web-monetization-audit",
+    title: "Web Monetization Audit",
+    description: "Revenue and monetization review — pricing, paywalls, conversion funnels, and missed revenue opportunities.",
+    category: "audit",
+    tags: ["monetization", "revenue", "pricing", "conversion", "paywall", "saas", "subscription", "ads"],
+    upvotes: 0,
+    prompt: `You are a senior growth/monetization strategist auditing this web product. Be direct — identify real revenue leaks and missed opportunities with concrete fixes.
+
+## Pricing & packaging
+
+### 1. Pricing model
+- Is the pricing model appropriate for the product type (freemium, subscription, usage-based, one-time)?
+- Are there too many or too few tiers? Can users quickly understand what they get at each level?
+- Is the free tier giving away too much (no reason to upgrade) or too little (no reason to stay)?
+- Is there a clear value gap between tiers that motivates upgrades?
+- Are prices anchored effectively (showing the "best value" tier prominently)?
+
+### 2. Pricing page
+- Can a visitor understand the pricing in under 10 seconds?
+- Are feature comparisons clear and scannable (not a wall of checkmarks)?
+- Is there social proof near the pricing (testimonials, customer logos, "X teams use this")?
+- Are annual vs monthly savings highlighted?
+- Is there a clear recommended/default plan?
+
+## Conversion funnels
+
+### 3. Free-to-paid conversion
+- What's the path from signup to first payment? How many steps?
+- Are there unnecessary friction points (required credit card upfront, complex onboarding, too many fields)?
+- Is there a trial period? Is it long enough to experience value but short enough to create urgency?
+- Are upgrade prompts shown at the right moments (when users hit limits, after key milestones)?
+- Is the checkout flow streamlined (minimal fields, multiple payment methods, trust signals)?
+
+### 4. Activation & time-to-value
+- How quickly does a new user reach the "aha moment"?
+- Are there onboarding flows that guide users to core value?
+- What percentage of signups likely become active users vs churning before activation?
+- Are there quick wins that demonstrate value immediately?
+
+### 5. Upsell & expansion revenue
+- Are there natural upsell moments built into the product (usage limits, team seats, premium features)?
+- Are upsell prompts helpful (showing what they'd unlock) vs annoying (constant pop-ups)?
+- Is there a path for teams/enterprise upgrades?
+- Are add-ons or usage-based charges available for power users?
+
+## Revenue leaks
+
+### 6. Churn risks
+- Are there cancellation flows that attempt to retain (pause, downgrade, feedback)?
+- Is there involuntary churn protection (failed payment retries, dunning emails, card update reminders)?
+- Are users reminded of the value they'd lose before cancelling?
+- Is there a win-back strategy for churned users?
+
+### 7. Missed monetization
+- Are there features users would pay for that are currently free?
+- Is there content/data that could be gated or metered?
+- Are there partnership, affiliate, or referral revenue opportunities?
+- Could usage-based pricing capture more value from heavy users?
+- Are there marketplace or platform fee opportunities?
+
+### 8. Analytics & tracking
+- Are conversion events tracked at each funnel stage (visit → signup → activate → convert → expand)?
+- Can you measure revenue per user, LTV, CAC, and payback period with current instrumentation?
+- Are A/B tests running on pricing or conversion flows?
+- Is there cohort analysis to understand which users convert best?
+
+## How to report each issue
+
+For every issue found:
+1. **Area** — which part of the monetization stack is affected.
+2. **Problem** — what revenue is being lost and why.
+3. **Impact** — estimated revenue effect (e.g., "~15-25% of trial users drop off here", "leaving $X/user on the table").
+4. **Fix** — concrete recommendation with implementation direction.
+5. **Priority** — P0 (revenue bleeding now), P1 (significant opportunity), P2 (optimization).
+
+## Output format
+
+Return a numbered list grouped by priority (P0 first). End with a summary:
+
+| # | Issue | Priority | Est. revenue impact | Effort |
+|---|-------|----------|---------------------|--------|
+
+If monetization is well-optimized, say so — don't invent problems.`,
   },
 ];
