@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useRef, useCallback } from "react";
-import { MessageSquareText, Puzzle, Package, Bot, ArrowRight, Copy, Zap, Terminal, Braces, Cpu, Layers } from "lucide-react";
+import { Puzzle, Package, Bot, ArrowRight, Copy, Zap, Terminal, Layers } from "lucide-react";
 import { prompts } from "@/data/prompts";
 import { mcps } from "@/data/mcps";
 import { webTools } from "@/data/web-tools";
@@ -36,81 +35,11 @@ const LampContainer = dynamic(
 );
 
 const features = [
-  {
-    title: "Prompts",
-    description: "Copy-paste prompts for every stage of development.",
-    href: "/prompts",
-    glowColor: "rgba(0,240,255,0.20)",
-    accent: "text-cyan",
-    accentBg: "bg-cyan/10 border-cyan/20",
-    iconColor: "text-cyan",
-    gradientFrom: "from-cyan/20",
-    preview: [
-      { icon: Terminal, label: "$ claude", sub: "Start a new project" },
-      { icon: Braces, label: "Fix this bug", sub: "Debug with context" },
-      { icon: Cpu, label: "Code review", sub: "Review PR changes" },
-    ],
-  },
-  {
-    title: "Agents",
-    description: "Pre-built agent configs for your dev workflow.",
-    href: "/agents",
-    glowColor: "rgba(251,191,36,0.20)",
-    accent: "text-amber-400",
-    accentBg: "bg-amber-400/10 border-amber-400/20",
-    iconColor: "text-amber-400",
-    gradientFrom: "from-amber-400/20",
-    preview: [
-      { icon: Bot, label: "Code Agent", sub: "Write & refactor" },
-      { icon: Bot, label: "Test Agent", sub: "Generate tests" },
-      { icon: Bot, label: "Review Agent", sub: "Review changes" },
-    ],
-  },
-  {
-    title: "MCPs",
-    description: "Claude MCPs, extensions, and dev tools.",
-    href: "/mcps",
-    glowColor: "rgba(139,92,246,0.20)",
-    accent: "text-violet",
-    accentBg: "bg-violet/10 border-violet/20",
-    iconColor: "text-violet",
-    gradientFrom: "from-violet/20",
-    preview: [
-      { img: "https://supabase.com/favicon/favicon-196x196.png", label: "Supabase" },
-      { img: "https://static.figma.com/app/icon/1/favicon.png", label: "Figma" },
-      { img: "https://vercel.com/favicon.ico", label: "Vercel" },
-    ],
-  },
-  {
-    title: "Web",
-    description: "Curated web libraries and frameworks.",
-    href: "/web",
-    glowColor: "rgba(52,211,153,0.20)",
-    accent: "text-emerald-400",
-    accentBg: "bg-emerald-400/10 border-emerald-400/20",
-    iconColor: "text-emerald-400",
-    gradientFrom: "from-emerald-400/20",
-    preview: [
-      { img: "https://ui.shadcn.com/favicon.ico", label: "shadcn/ui" },
-      { img: "https://orm.drizzle.team/favicon.ico", label: "Drizzle ORM" },
-      { img: "https://tanstack.com/favicon.ico", label: "TanStack Query" },
-    ],
-  },
-  {
-    title: "Mobile",
-    description: "Libraries and tools for iOS and Android.",
-    href: "/mobile",
-    glowColor: "rgba(59,130,246,0.20)",
-    accent: "text-blue-400",
-    accentBg: "bg-blue-400/10 border-blue-400/20",
-    iconColor: "text-blue-400",
-    gradientFrom: "from-blue-400/20",
-    preview: [
-      { img: "https://github.com/expo.png", label: "Expo" },
-      { img: "https://www.revenuecat.com/favicon-32x32.png", label: "RevenueCat" },
-      { img: "https://github.com/LottieFiles.png", label: "Lottie" },
-    ],
-  },
+  { title: "Prompts", description: "Copy-paste prompts for dev.", href: "/prompts", accent: "text-cyan", icon: Terminal },
+  { title: "Agents", description: "Pre-built agent configs.", href: "/agents", accent: "text-amber-400", icon: Bot },
+  { title: "MCPs", description: "MCPs, extensions, and tools.", href: "/mcps", accent: "text-violet", icon: Puzzle },
+  { title: "Web", description: "Web libraries and frameworks.", href: "/web", accent: "text-emerald-400", icon: Layers },
+  { title: "Mobile", description: "iOS and Android tools.", href: "/mobile", accent: "text-blue-400", icon: Package },
 ];
 
 const trending = [
@@ -151,74 +80,21 @@ const trending = [
 ];
 
 function FeatureGrid() {
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    const cards = grid.querySelectorAll<HTMLElement>("[data-card]");
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
-      card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-    });
-  }, []);
-
   return (
     <section className="relative max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
-      <div
-        ref={gridRef}
-        onMouseMove={handleMouseMove}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-      >
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {features.map((feature) => (
           <Link
             key={feature.title}
             href={feature.href}
-            data-card
-            className="group relative overflow-hidden rounded-2xl border border-white/[0.12] bg-white/[0.03] transition-all duration-300 hover:border-white/[0.20] hover:-translate-y-1"
+            className="group relative overflow-hidden rounded-xl border border-white/[0.10] bg-white/[0.03] px-4 py-3 transition-all duration-200 hover:border-white/[0.20] hover:-translate-y-0.5"
           >
-            {/* Mouse spotlight */}
-            <div
-              className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{
-                background: `radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${feature.glowColor}, transparent 40%)`,
-              }}
-            />
-
-            {/* Top gradient accent line */}
-            <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent ${feature.gradientFrom} to-transparent`} />
-
-            {/* Preview area */}
-            <div className="relative px-6 pt-6 pb-2">
-              <div className="rounded-xl bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.06] p-2.5 space-y-2">
-                {feature.preview.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/[0.03] border border-white/[0.05] group-hover:border-white/[0.08] transition-colors"
-                  >
-                    {"img" in item ? (
-                      <img src={item.img} alt="" width={20} height={20} className="w-5 h-5 rounded-md object-contain shrink-0" />
-                    ) : (
-                      <item.icon className={`w-4 h-4 ${feature.iconColor} shrink-0`} />
-                    )}
-                    <span className="text-sm text-foreground/80 font-medium">{item.label}</span>
-                    {"sub" in item && item.sub && (
-                      <span className="text-[11px] text-muted-foreground/50 hidden sm:inline ml-auto">{item.sub}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
+            <div className="flex items-center gap-2 mb-1">
+              <feature.icon className={`w-4 h-4 ${feature.accent} shrink-0`} />
+              <h3 className="font-semibold text-sm">{feature.title}</h3>
             </div>
-
-            {/* Text content */}
-            <div className="relative px-6 pb-6 pt-3">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-base">{feature.title}</h3>
-                <ArrowRight className={`w-4 h-4 ${feature.accent} opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all`} />
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">{feature.description}</p>
-            </div>
+            <p className="text-[11px] text-muted-foreground leading-snug">{feature.description}</p>
+            <ArrowRight className={`absolute top-3 right-3 w-3 h-3 ${feature.accent} opacity-0 group-hover:opacity-100 transition-opacity`} />
           </Link>
         ))}
       </div>
