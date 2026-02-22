@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion } from "framer-motion";
 import {
   Copy,
@@ -20,78 +20,67 @@ import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import type { Workflow } from "@/data/workflows";
 
 const iconMap: Record<string, React.ElementType> = {
-  Rocket,
-  CreditCard,
-  GitBranch,
-  Layout,
-  Lock,
-  Server,
+  Rocket, CreditCard, GitBranch, Layout, Lock, Server,
 };
 
-export function WorkflowCard({
+export const WorkflowCard = memo(function WorkflowCard({
   workflow,
   index,
+  defaultExpanded = false,
 }: {
   workflow: Workflow;
   index: number;
+  defaultExpanded?: boolean;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const Icon = iconMap[workflow.icon] || Rocket;
 
   const toggleStep = (stepIndex: number) => {
     setCompletedSteps((prev) => {
       const next = new Set(prev);
-      if (next.has(stepIndex)) {
-        next.delete(stepIndex);
-      } else {
-        next.add(stepIndex);
-      }
+      if (next.has(stepIndex)) next.delete(stepIndex);
+      else next.add(stepIndex);
       return next;
     });
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.4 }}
-      className="glass rounded-2xl overflow-hidden hover:border-cyan/20 transition-all duration-300"
-    >
+    <div className="glass rounded-xl overflow-hidden hover:border-cyan/20 transition-all duration-200">
+
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full p-5 flex items-center gap-4 text-left"
+        className="w-full px-4 py-3 flex items-center gap-3 text-left"
+        aria-expanded={expanded}
+        aria-label={`${workflow.title} workflow — ${expanded ? "collapse" : "expand"}`}
       >
-        <div className="p-3 rounded-xl bg-gradient-to-br from-cyan/10 to-violet/10 border border-cyan/10 shrink-0">
-          <Icon className="w-5 h-5 text-cyan" />
+        <div className="p-2 rounded-lg bg-gradient-to-br from-cyan/10 to-violet/10 border border-cyan/10 shrink-0">
+          <Icon className="w-4 h-4 text-cyan" />
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-base mb-0.5">{workflow.title}</h3>
-          <p className="text-sm text-muted-foreground">{workflow.description}</p>
+          <h3 className="font-semibold text-sm">{workflow.title}</h3>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
-          <Badge variant="secondary" className="text-xs gap-1">
-            <Clock className="w-3 h-3" />
-            {workflow.duration}
-          </Badge>
-          {expanded ? (
-            <ChevronUp className="w-4 h-4 text-muted-foreground" />
-          ) : (
-            <ChevronDown className="w-4 h-4 text-muted-foreground" />
-          )}
-        </div>
+        <Badge variant="secondary" className="text-[10px] gap-1 shrink-0">
+          <Clock className="w-2.5 h-2.5" />
+          {workflow.duration}
+        </Badge>
+        {expanded ? (
+          <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" aria-hidden="true" />
+        ) : (
+          <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" aria-hidden="true" />
+        )}
       </button>
 
       {expanded && (
         <motion.div
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="px-5 pb-5"
+          transition={{ duration: 0.2 }}
+          className="px-4 pb-4"
         >
-          <div className="border-t border-border/50 pt-4 space-y-3">
+          <div className="border-t border-border/50 pt-3 space-y-1.5">
             {workflow.steps.map((step, stepIndex) => (
               <WorkflowStep
                 key={stepIndex}
@@ -104,9 +93,9 @@ export function WorkflowCard({
           </div>
         </motion.div>
       )}
-    </motion.div>
+    </div>
   );
-}
+});
 
 function WorkflowStep({
   step,
@@ -137,58 +126,54 @@ function WorkflowStep({
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex items-center gap-2.5">
       <button
         onClick={onToggle}
-        className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold transition-all ${
+        role="checkbox"
+        aria-checked={completed}
+        aria-label={`Step ${stepNumber}: ${step.title}`}
+        className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-[10px] font-bold transition-all ${
           completed
             ? "bg-green-500/20 text-green-400 border border-green-500/30"
-            : "bg-background/50 text-muted-foreground border border-border/50"
+            : "bg-background border border-border/50 text-muted-foreground"
         }`}
       >
-        {completed ? <Check className="w-3.5 h-3.5" /> : stepNumber}
+        {completed ? <Check className="w-3 h-3" /> : stepNumber}
       </button>
 
-      <div className="flex-1 min-w-0">
-        <h4
-          className={`text-sm font-medium mb-0.5 ${
-            completed ? "line-through text-muted-foreground" : ""
-          }`}
-        >
-          {step.title}
-        </h4>
-        <p className="text-xs text-muted-foreground mb-2">{step.description}</p>
+      <span className={`text-sm flex-1 ${completed ? "line-through text-muted-foreground" : ""}`}>
+        {step.title}
+      </span>
 
+      <div className="flex items-center gap-1 shrink-0">
         {step.command && (
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={handleCopyCmd}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background/50 border border-border/50 hover:border-cyan/30 hover:bg-cyan/5 transition-all group/btn w-full mb-2"
+            className="p-1.5 rounded-md hover:bg-cyan/10 transition-colors"
+            aria-label={copiedCmd ? "Copied command" : `Copy command: ${step.command}`}
           >
-            <code className="text-xs text-muted-foreground truncate flex-1 text-left font-mono">
-              {step.command}
-            </code>
             {copiedCmd ? (
-              <Check className="w-3.5 h-3.5 text-green-400 shrink-0" />
+              <Check className="w-3.5 h-3.5 text-green-400" />
             ) : (
-              <Copy className="w-3.5 h-3.5 text-muted-foreground group-hover/btn:text-cyan shrink-0" />
+              <Copy className="w-3.5 h-3.5 text-muted-foreground hover:text-cyan" />
             )}
-          </button>
+          </motion.button>
         )}
 
         {step.prompt && (
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={handleCopyPrompt}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-violet/5 border border-violet/20 hover:border-violet/40 hover:bg-violet/10 transition-all group/btn w-full text-left"
+            className="p-1.5 rounded-md hover:bg-violet/10 transition-colors"
+            aria-label={copiedPrompt ? "Copied prompt" : "Copy AI prompt"}
           >
-            <span className="text-xs text-violet truncate flex-1 font-mono">
-              Copy AI Prompt
-            </span>
             {copiedPrompt ? (
-              <Check className="w-3.5 h-3.5 text-green-400 shrink-0" />
+              <Check className="w-3.5 h-3.5 text-green-400" />
             ) : (
-              <Copy className="w-3.5 h-3.5 text-violet/60 group-hover/btn:text-violet shrink-0" />
+              <Copy className="w-3.5 h-3.5 text-violet/60 hover:text-violet" />
             )}
-          </button>
+          </motion.button>
         )}
       </div>
     </div>

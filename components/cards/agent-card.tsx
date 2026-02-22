@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion } from "framer-motion";
 import {
   Copy,
   Check,
-  ChevronDown,
-  ChevronUp,
   Code2,
   FlaskConical,
   Rocket,
@@ -23,22 +21,29 @@ import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import type { Agent } from "@/data/agents";
 
 const iconMap: Record<string, React.ElementType> = {
-  Code2,
-  FlaskConical,
-  Rocket,
-  Palette,
-  ClipboardList,
-  Shield,
-  FileText,
-  Zap,
-  Server,
-  GitPullRequest,
+  Code2, FlaskConical, Rocket, Palette, ClipboardList,
+  Shield, FileText, Zap, Server, GitPullRequest,
 };
 
-export function AgentCard({ agent, index }: { agent: Agent; index: number }) {
-  const [expanded, setExpanded] = useState(false);
+const roleColors: Record<string, { bg: string; border: string; text: string }> = {
+  Code2: { bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400" },
+  FlaskConical: { bg: "bg-amber-500/10", border: "border-amber-500/20", text: "text-amber-400" },
+  Rocket: { bg: "bg-orange-500/10", border: "border-orange-500/20", text: "text-orange-400" },
+  Palette: { bg: "bg-violet/10", border: "border-violet/20", text: "text-violet" },
+  ClipboardList: { bg: "bg-blue-500/10", border: "border-blue-500/20", text: "text-blue-400" },
+  Shield: { bg: "bg-red-500/10", border: "border-red-500/20", text: "text-red-400" },
+  FileText: { bg: "bg-slate-400/10", border: "border-slate-400/20", text: "text-slate-400" },
+  Zap: { bg: "bg-yellow-500/10", border: "border-yellow-500/20", text: "text-yellow-400" },
+  Server: { bg: "bg-cyan/10", border: "border-cyan/20", text: "text-cyan" },
+  GitPullRequest: { bg: "bg-purple-500/10", border: "border-purple-500/20", text: "text-purple-400" },
+};
+
+const defaultColor = { bg: "bg-cyan/10", border: "border-cyan/20", text: "text-cyan" };
+
+export const AgentCard = memo(function AgentCard({ agent }: { agent: Agent; index: number }) {
   const [copied, setCopied] = useState(false);
   const Icon = iconMap[agent.icon] || Code2;
+  const color = roleColors[agent.icon] || defaultColor;
 
   const handleCopy = async () => {
     await copyToClipboard(agent.systemPrompt, "System prompt");
@@ -47,85 +52,35 @@ export function AgentCard({ agent, index }: { agent: Agent; index: number }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.4 }}
-      className="group glass rounded-2xl p-5 hover:border-cyan/20 transition-all duration-300"
-    >
-      <div className="flex items-start gap-4">
-        <div className="p-3 rounded-xl bg-gradient-to-br from-cyan/10 to-violet/10 border border-cyan/10 shrink-0">
-          <Icon className="w-5 h-5 text-cyan" />
+    <div className="group glass rounded-xl p-4 hover:border-cyan/20 transition-all duration-200 hover:-translate-y-0.5">
+      <div className="flex items-center gap-3">
+        <div className={`p-2.5 rounded-lg ${color.bg} border ${color.border} shrink-0`}>
+          <Icon className={`w-5 h-5 ${color.text}`} />
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-base">{agent.name}</h3>
-            <Badge variant="outline" className="text-xs text-cyan border-cyan/30">
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-sm">{agent.name}</h3>
+            <Badge variant="outline" className={`text-[10px] ${color.text} ${color.border} px-1.5 py-0`}>
               {agent.recommendedModel}
             </Badge>
           </div>
-          <p className="text-xs text-muted-foreground mb-1">{agent.role}</p>
-          <p className="text-sm text-muted-foreground mb-3">{agent.description}</p>
-
-          <div className="flex flex-wrap gap-2 mb-3">
-            {agent.starters.map((starter) => (
-              <button
-                key={starter}
-                onClick={() => copyToClipboard(starter, "Starter")}
-                className="text-xs px-3 py-1.5 rounded-lg glass hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                &quot;{starter}&quot;
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleCopy}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass hover:bg-cyan/10 hover:border-cyan/30 text-sm transition-all duration-200"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-green-400" /> Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5" /> Copy System Prompt
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {expanded ? (
-                <>
-                  <ChevronUp className="w-3.5 h-3.5" /> Hide
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="w-3.5 h-3.5" /> Preview
-                </>
-              )}
-            </button>
-          </div>
+          <p className="text-xs text-muted-foreground line-clamp-1">{agent.role}</p>
         </div>
-      </div>
 
-      {expanded && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          transition={{ duration: 0.2 }}
-          className="mt-4"
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={handleCopy}
+          className="shrink-0 p-2.5 rounded-lg glass-subtle hover:bg-cyan/10 transition-colors"
+          aria-label={copied ? "Copied system prompt" : `Copy ${agent.name} system prompt`}
         >
-          <pre className="text-xs text-muted-foreground bg-background/50 rounded-xl p-4 overflow-x-auto whitespace-pre-wrap border border-border/50 max-h-64 overflow-y-auto">
-            {agent.systemPrompt}
-          </pre>
-        </motion.div>
-      )}
-    </motion.div>
+          {copied ? (
+            <Check className="w-4 h-4 text-green-400" />
+          ) : (
+            <Copy className="w-4 h-4 text-muted-foreground group-hover:text-cyan" />
+          )}
+        </motion.button>
+      </div>
+    </div>
   );
-}
+});

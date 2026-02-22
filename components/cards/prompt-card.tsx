@@ -1,14 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion } from "framer-motion";
-import { Copy, Check, ChevronDown, ChevronUp, ThumbsUp } from "lucide-react";
+import { Copy, Check, ThumbsUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import type { Prompt } from "@/data/prompts";
 
-export function PromptCard({ prompt, index }: { prompt: Prompt; index: number }) {
-  const [expanded, setExpanded] = useState(false);
+const categoryColors: Record<string, string> = {
+  setup: "bg-emerald-500",
+  ui: "bg-violet",
+  api: "bg-cyan",
+  mobile: "bg-blue-500",
+  testing: "bg-amber-500",
+  deploy: "bg-orange-500",
+  debug: "bg-red-500",
+  docs: "bg-slate-400",
+};
+
+export const PromptCard = memo(function PromptCard({
+  prompt,
+  featured = false,
+}: {
+  prompt: Prompt;
+  index: number;
+  featured?: boolean;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -17,86 +34,54 @@ export function PromptCard({ prompt, index }: { prompt: Prompt; index: number })
     setTimeout(() => setCopied(false), 2000);
   };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.4 }}
-      className="group glass rounded-2xl p-5 hover:border-cyan/20 transition-all duration-300"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-base mb-1">{prompt.title}</h3>
-          <p className="text-sm text-muted-foreground mb-3">
-            {prompt.description}
-          </p>
+  const accentColor = categoryColors[prompt.category] || "bg-cyan";
 
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            {prompt.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-            <Badge variant="outline" className="text-xs text-cyan border-cyan/30">
+  return (
+    <div
+      className={`group relative rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 ${
+        featured
+          ? "glass-prominent hover:border-cyan/30"
+          : "glass hover:border-cyan/20"
+      }`}
+    >
+      {/* Left accent stripe */}
+      <div className={`absolute left-0 top-0 bottom-0 w-[3px] ${accentColor} opacity-60`} />
+
+      <div className="flex items-center gap-3 px-4 pl-5 py-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <h3 className={`font-semibold ${featured ? "text-base" : "text-sm"}`}>
+              {prompt.title}
+            </h3>
+            <Badge variant="outline" className="text-[10px] text-cyan border-cyan/30 px-1.5 py-0">
               {prompt.bestWith}
             </Badge>
           </div>
+          <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+            {prompt.description}
+          </p>
         </div>
 
-        <div className="flex flex-col items-center gap-2 shrink-0">
-          <button
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[10px] text-muted-foreground/60 flex items-center gap-0.5">
+            <ThumbsUp className="w-2.5 h-2.5" />
+            {prompt.upvotes}
+          </span>
+
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={handleCopy}
-            className="p-2.5 rounded-xl glass hover:bg-cyan/10 hover:border-cyan/30 transition-all duration-200"
+            className="p-2.5 rounded-lg glass-subtle hover:bg-cyan/10 transition-colors"
+            aria-label={copied ? "Copied prompt" : `Copy ${prompt.title} prompt`}
           >
             {copied ? (
               <Check className="w-4 h-4 text-green-400" />
             ) : (
               <Copy className="w-4 h-4 text-muted-foreground group-hover:text-cyan" />
             )}
-          </button>
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <ThumbsUp className="w-3 h-3" />
-            {prompt.upvotes}
-          </div>
+          </motion.button>
         </div>
       </div>
-
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-      >
-        {expanded ? (
-          <>
-            <ChevronUp className="w-3 h-3" /> Hide prompt
-          </>
-        ) : (
-          <>
-            <ChevronDown className="w-3 h-3" /> Show prompt
-          </>
-        )}
-      </button>
-
-      {expanded && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-3"
-        >
-          <div className="relative">
-            <pre className="text-xs text-muted-foreground bg-background/50 rounded-xl p-4 overflow-x-auto whitespace-pre-wrap border border-border/50 max-h-64 overflow-y-auto">
-              {prompt.prompt}
-            </pre>
-            <button
-              onClick={handleCopy}
-              className="absolute top-2 right-2 p-1.5 rounded-lg bg-background/80 hover:bg-cyan/10 transition-colors"
-            >
-              <Copy className="w-3.5 h-3.5 text-muted-foreground" />
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </motion.div>
+    </div>
   );
-}
+});
